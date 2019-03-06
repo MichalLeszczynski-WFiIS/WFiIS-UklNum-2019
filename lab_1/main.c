@@ -1,13 +1,14 @@
 #include </usr/include/gsl/gsl_math.h>
 #include </usr/include/gsl/gsl_linalg.h>
 #include <stdio.h>
+#include "utilities.h"
+
 
 int main()
 {
 
 
 
-printf("Hello\n");
 
 int n = 4;
 int signum;
@@ -19,17 +20,33 @@ gsl_matrix *B = gsl_matrix_calloc(n,n);
 gsl_vector *b = gsl_vector_calloc(n);
 gsl_vector *x = gsl_vector_calloc(n);
 gsl_permutation *p = gsl_permutation_calloc(n);
+
+
 //wypelnia macierz a
 for(int i=0;i<n;i++)
 {
     for(int j=0;j<n;j++)
     {
-        double war = 1.0/(i+j+2.0);
+        double war = 1.0/((double)i+(double)j+2.0);
         gsl_matrix_set(A, i, j, war);
         gsl_matrix_set(A_cpy, i, j, war);
     }
 }
+printf("\n A \n ");
+printGSLMatrix(A, "%7.7f\t");
+
+
 gsl_linalg_LU_decomp(A,p,&signum);
+
+
+printf("\n A \n ");
+printGSLMatrix(A, "%7.7f\t");
+
+
+printf("det(U) = %g",detOfTriangularMatrix(A));
+
+printf("\n A_cpy \n ");
+printGSLMatrix(A_cpy, "%7.7f\t");
 
 
 for(int k=0;k<n;k++)
@@ -43,41 +60,14 @@ for(int k=0;k<n;k++)
 }
 
 
+printf("\n B \n ");
+printGSLMatrix(B, "%9.f\t");
+C =  multiplyGSLMatricies(A_cpy, B);
 
-for(int i=0;i<n;i++)
-{
-    for(int j=0;j<n;j++)
-    {
-        printf("%7.f\t\t",  gsl_matrix_get(B, i, j));
-     }printf("\n");
-}
+printf("\n C \n "); 
+printGSLMatrix(C, "%10.g\t");
 
-
-for(int i=0;i<n;i++)
-{
-    for(int j=0;j<n;j++)
-    {
-        printf("%7.f\t\t\t",  gsl_matrix_get(A_cpy, i, j));
-     }printf("\n");
-}
-
-fo r ( i =0; i<=n ; i ++){
-fo r ( j =0; j<=n ; j ++){
-A_cpy[ i ] [ j ] = 0 . ; // z e r u j e m y komorke w k t o r e j z a p i s z e m y w a r t o s c
-for ( k=0;k<=n ; k++) gsl_matrix_set(C,i,j,gsl_matrix_get(C, i, j)+=gsl_matrix_get(A_cpy, i, k) ∗ gsl_matrix_get(B, k, j); // i l o c z y n s k a l a r n y
-}
-}
-
-for(int i=0;i<n;i++)
-{
-    for(int j=0;j<n;j++)
-    {
-        printf("%7.f\t\t\t",  gsl_matrix_get(A_cpy, i, j));
-     }printf("\n");
-}
-
-
-
+printf("\n\nKappa = %f \n\n", maxElementGSLMatrix(A_cpy) * maxElementGSLMatrix(B));
 
 
 
