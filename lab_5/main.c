@@ -168,6 +168,7 @@ double **Tmp2;
 
 /////////////////////// OBLICZENIA //////////////////////////
 
+
     for(int k = 0; k < K_val; k++)
     {
         wyplenijWektorWartoscia(x_s,1.0, n);
