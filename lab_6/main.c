@@ -3,15 +3,15 @@
 #include <stdio.h>
 
 
-///////////////// POCZĄTEK FUNKCJI ////////////////////////////////////
+// ///////////////// POCZĄTEK FUNKCJI ////////////////////////////////////
 
-double absol(double x)
-{
-    if(x < 0)
-    return -x;
-    else
-    return x;
-}
+// double absol(double x)
+// {
+//     if(x < 0)
+//     return -x;
+//     else
+//     return x;
+// }
 
 
 double f(double x)
@@ -39,152 +39,176 @@ double oblicz_p(double i, double ii, double iii)
     return (log(ii/iii))/(log(i/ii));
 }
 
-///////////////// KONIEC FUNKCJI ////////////////////////////////////
+// ///////////////// KONIEC FUNKCJI ////////////////////////////////////
 
 
 
-/////////////// TEORIA //////////////////////////////
-/*
-metoda newtona:
-x_i+1 = x_i - f(x_i)/fprim(x_i)
+// /////////////// TEORIA //////////////////////////////
+// /*
+// metoda newtona:
+// x_i+1 = x_i - f(x_i)/fprim(x_i)
 
-koniec: x_i - x_i-1 < epsilon
-
-
-metoda siecznych (dwupunktowa):
-x_i+1 = x_i - f(x_i) * (x_i - x_i-1) / (f(x_i) - f(x_i-1))
-
-koniec:
+// koniec: x_i - x_i-1 < epsilon
 
 
+// metoda siecznych (dwupunktowa):
+// x_i+1 = x_i - f(x_i) * (x_i - x_i-1) / (f(x_i) - f(x_i-1))
 
-*/
-///////////////////////////////////////////////////////////
+// koniec:
+
+
+
+// */
+// ///////////////////////////////////////////////////////////
 
 
 
 int main()
 {
+	 FILE *f1; 
+     f1=fopen("f.dat", "w");
+
+     FILE *f3; 
+     f3=fopen("g.dat", "w");
 
 
-//////////// POCZĄTEK INICJALIZACJI //////////////////////////////
+for(double x = 0.4; x < 2.5; x+= 0.1)
+{
+	fprintf(f1, "%f %f %f \n", x, f(x), f_prim(x));
+}
 
-    int n = 500;
 
-    double *x = (double*)malloc(n*sizeof(double));
-    double *e = (double*)malloc(n*sizeof(double));
-    double *p = (double*)malloc(n*sizeof(double));
-    double x_d; 
+for(double x = -4.0; x < 2.1; x+= 0.1)
+{
+	fprintf(f3, "%f %f %f \n", x, g(x), g_prim(x));
+}
+
+
+
+	fclose(f1);
+
+	fclose(f3);
+
+	return 0;
+}
+// //////////// POCZĄTEK INICJALIZACJI //////////////////////////////
+
+//     int n = 500;
+
+//     double *x = (double*)malloc(n*sizeof(double));
+//     double *e = (double*)malloc(n*sizeof(double));
+//     double *p = (double*)malloc(n*sizeof(double));
+//     double x_d; 
 
    
-     FILE *f1; 
-     f1=fopen("newton_funkcja_log.dat", "w");
-     FILE *f2; 
-     f2=fopen("newton_funkcja_wielomian.dat", "w");
-     FILE *f3; 
-     f3=fopen("siecznych_funkcja_log.dat", "w");
-     FILE *f4; 
-     f4=fopen("siecznych_funkcja_wielomian.dat", "w");
+//      FILE *f1; 
+//      f1=fopen("newton_funkcja_log.dat", "w");
+//      FILE *f2; 
+//      f2=fopen("newton_funkcja_wielomian.dat", "w");
+//      FILE *f3; 
+//      f3=fopen("siecznych_funkcja_log.dat", "w");
+//      FILE *f4; 
+//      f4=fopen("siecznych_funkcja_wielomian.dat", "w");
 
-////////////////// KONIEC INICJALIZACJI /////////////////////
-
-
-
-/////////////////////// OBLICZENIA //////////////////////////
-
-/////// METODA NEWTONA //////
-
-x_d = 1.0;
-x[0] = 3.0;
-p[0] = p[19] = 0;
-    for(int i=0; i <= 20 ; i++)
-    {
-        x[i+1] = x[i] - (f(x[i])/f_prim(x[i]));
-        e[i+1] = absol(x[i+1] - x_d);
-        if(i > 1)
-        {
-            p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
-        }
-    printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
-    fprintf(f1,"%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
-    }
-
-printf("\n\n");
-
-
-    x[0] = -20.0;
-    p[0] = p[19] = 0;
-    x_d = -3.284277537306950;
-    for(int i=0; i <= 20 ; i++)
-    {
-        x[i+1] = x[i] - (g(x[i])/g_prim(x[i]));
-        e[i+1] = absol(x[i+1] - x_d);
-        if(i > 1)
-        {
-            p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
-        }
-    printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
-    fprintf(f2,"%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
-    }
-
-    printf("\n\n");
-
-////////////////// METODA SIECZNYCH /////////////
-
-x[0] = 3.1;
-x[1] = 3.0;
-p[0] = p[20] = 0;
-x_d = 1.0;
-    for(int i=1; i < 21 ; i++)
-    {
-        x[i+1] = x[i] - ((f(x[i]) * (x[i] - x[i-1]) )/(f(x[i]) - f(x[i-1])));
-        e[i+1] = absol(x[i+1] - x_d);
-        if(i > 1)
-        {
-            p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
-        }
-    printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
-    fprintf(f3,"%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
-    }
-
-printf("\n\n");
-
-
-    x[0] = -20.1;
-    x[1] = -20.0;
-    p[0] = p[20] = 0;
-    x_d = -3.284277537306950;
-    for(int i=1; i <= 21 ; i++)
-    {
-        x[i+1] = x[i] - ((g(x[i]) * (x[i] - x[i-1]) )/(g(x[i]) - g(x[i-1])));
-        e[i+1] = absol(x[i+1] - x_d);
-        if(i > 1)
-        {
-            p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
-        }
-    printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
-    fprintf(f4,"%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
-    }
-
-
-printf("\n\n");
-printf("\n\n");
+// ////////////////// KONIEC INICJALIZACJI /////////////////////
 
 
 
+// /////////////////////// OBLICZENIA //////////////////////////
+
+// /////// METODA NEWTONA //////
+
+// x_d = 1.0;
+// x[0] = 3.0;
+// p[0] = p[19] = 0;
+//     for(int i=0; i <= 20 ; i++)
+//     {
+//         x[i+1] = x[i] - (f(x[i])/f_prim(x[i]));
+//         e[i+1] = absol(x[i+1] - x_d);
+//         if(i > 1)
+//         {
+//             p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
+//         }
+//     printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
+//     fprintf(f1,"%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
+//     }
+
+// printf("\n\n");
 
 
-////////////////////// KONIEC OBLICZEŃ ////////////////////////
+//     x[0] = -20.0;
+//     p[0] = p[19] = 0;
+//     x_d = -3.284277537306950;
+//     for(int i=0; i <= 20 ; i++)
+//     {
+//         x[i+1] = x[i] - (g(x[i])/g_prim(x[i]));
+//         e[i+1] = absol(x[i+1] - x_d);
+//         if(i > 1)
+//         {
+//             p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
+//         }
+//     printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
+//     fprintf(f2,"%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
+//     }
 
-fclose(f1);
-fclose(f2);
-fclose(f3);
-fclose(f4);
-free(x);
-free(e);
-free(p);
+//     printf("\n\n");
+
+// ////////////////// METODA SIECZNYCH /////////////
+
+// x[0] = 3.1;
+// x[1] = 3.0;
+// p[0] = p[20] = 0;
+// x_d = 1.0;
+//     for(int i=1; i < 21 ; i++)
+//     {
+//         x[i+1] = x[i] - ((f(x[i]) * (x[i] - x[i-1]) )/(f(x[i]) - f(x[i-1])));
+//         e[i+1] = absol(x[i+1] - x_d);
+//         if(i > 1)
+//         {
+//             p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
+//         }
+//     printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
+//     fprintf(f3,"%d %20.15f %20.15f %20.15f %20.15f\n", i, f(x[i]), x[i], e[i], p[i]);
+//     }
+
+// printf("\n\n");
+
+
+//     x[0] = -20.1;
+//     x[1] = -20.0;
+//     p[0] = p[20] = 0;
+//     x_d = -3.284277537306950;
+//     for(int i=1; i <= 21 ; i++)
+//     {
+//         x[i+1] = x[i] - ((g(x[i]) * (x[i] - x[i-1]) )/(g(x[i]) - g(x[i-1])));
+//         e[i+1] = absol(x[i+1] - x_d);
+//         if(i > 1)
+//         {
+//             p[i] = oblicz_p(e[i-1], e[i], e[i+1]);
+//         }
+//     printf("%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
+//     fprintf(f4,"%d %20.15f %20.15f %20.15f %20.15f\n", i, g(x[i]), x[i], e[i], p[i]);
+//     }
+
+
+// printf("\n\n");
+// printf("\n\n");
 
 
 
-return 0;
-}
+
+
+// ////////////////////// KONIEC OBLICZEŃ ////////////////////////
+
+// fclose(f1);
+// fclose(f2);
+// fclose(f3);
+// fclose(f4);
+// free(x);
+// free(e);
+// free(p);
+
+
+
+// return 0;
+// }
