@@ -16,7 +16,7 @@ double f_0(double t, double omega)
 
 double delta()
 {
-    return rand()/(RAND_MAX + 1.0) - 0.5;
+    return (rand()/(RAND_MAX + 1.0)) - 0.5;
 }
 
 double f(double t,double omega)
@@ -90,8 +90,8 @@ int main()
         {
             Af0[2*i] = f_0(t[i], omega);
             Af[2*i] = f(t[i], omega);
-            Ag1[2*i] = g(t[i], omega);
-            Ag2[2*i] = g(t[i], omega);
+            Ag1[2*i] = g(t[i], sigma);
+            Ag2[2*i] = g(t[i], sigma);
         }
 
         for(int i=1; i < 2*N; i+=2 )
